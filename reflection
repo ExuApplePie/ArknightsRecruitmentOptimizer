@@ -1,0 +1,4 @@
+Split the image into each of the tags using some basic pixel counting and math
+then OCR each tag
+todo: get the screenshot (should be simple)
+      input tags into aceship
