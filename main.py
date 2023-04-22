@@ -4,8 +4,10 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import readTags
 import getTags
+import openCalc
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     getTags.createTags()
     readTags.getTags()
+    openCalc.openCalc();
