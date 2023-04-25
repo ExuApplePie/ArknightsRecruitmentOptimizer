@@ -1,4 +1,5 @@
 from PIL import Image
+import os
 
 import pytesseract
 
@@ -19,7 +20,7 @@ import pytesseract
 # print(30/900)
 # print("\n###########\n")
 
-path = "data/testdata1.png"
+path = os.path.normpath("data/testdata1.png")
 im = Image.open(path)
 width, height = im.size
 firstTagX = 470
@@ -32,11 +33,20 @@ def crop_image(input_image, output_image, start_x, start_y, width, height):
     input_img = Image.open(input_image)
     box = (start_x, start_y, start_x + width, start_y + height)
     output_img = input_img.copy().crop(box)
-    output_img.save(output_image +".png")
+    # create a new file if not exist in png format
+    directory = os.path.normpath("data/eachTag")
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        output_img.save(output_image + ".png")
+    except (KeyError, IOError) as e:
+        print(e)
 
+# this function will create the tags from the image by cropping the image and saving it to the specified folder
 def createTags():
     for i in range(5):
-        crop_image(path, f"data/eachTag/tag{i}",
+        # f makes it format the string
+        crop_image(path, os.path.normpath(f"data/eachTag/tag{i}"),
                    firstTagX + (i % 3) * (30 + tagLen),
                    firstTagY + (i % 2) * (30 + tagHeight), tagLen, tagHeight)
 

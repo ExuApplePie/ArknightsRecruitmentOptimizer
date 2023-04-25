@@ -2,12 +2,12 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import getScreenshot
 import readTags
 import getTags
 import openCalc
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    getTags.createTags()
-    readTags.getTags()
-    openCalc.openCalc();
+    getScreenshot.getScreenshot()
+    # openCalc.openCalc()

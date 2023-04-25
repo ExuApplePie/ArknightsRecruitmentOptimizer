@@ -6,7 +6,7 @@ directory = "data/eachTag"
 tagList = []
 
 def readTag(filePath):
-    tagList.append(pytesseract.image_to_string(Image.open(filePath)).lower().rstrip("\n"))
+    tagList.append(pytesseract.image_to_string(Image.open(filePath)).rstrip("\n"))
 
 def getTags():
     for filename in os.listdir(directory):
