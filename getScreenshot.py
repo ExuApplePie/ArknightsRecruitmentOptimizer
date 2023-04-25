@@ -1,62 +1,25 @@
 import pygetwindow
-import time
+from PIL import ImageGrab
+from PIL import Image
 import os
-import pyautogui
-import pyscreeze
-import PIL
-def getScreenshot():
-    # get screensize
-    x, y = pyautogui.size()
-    print(f"width={x}\theight={y}")
 
-    x2, y2 = pyautogui.size()
-    x2, y2 = int(str(x2)), int(str(y2))
-    print(x2 // 2)
-    print(y2 // 2)
-
-    # find new window title
-    # z1 = pygetwindow.getAllTitles()
-    # time.sleep(1)
-    # print(z1)
-    # print(len(z1))
-    # # get current directory/data
-    # os.startfile(os.path.normpath(os.getcwd() + "/data"))
-    # time.sleep(1)
-    # z2 = pygetwindow.getAllTitles()
-    # print(len(z2))
-    # time.sleep(1)
-    # z3 = [x for x in z2 if x not in z1]
-    # z3 = ''.join(z3)
-    # time.sleep(3)
-
-    # also able to edit z3 to specified window-title string like: "Sublime Text (UNREGISTERED)"
-    window = "arknights"
-    my = pygetwindow.getWindowsWithTitle(window)[0]
-    # quarter of screen screensize
-    x3 = x2 // 2
-    y3 = y2 // 2
-    my.resizeTo(x3, y3)
-    # top-left
-    my.moveTo(0, 0)
-    time.sleep(1)
-    if my != None:
-        try:
-            my.activate()
-        except:
-            my.minimize()
-            my.maximize()
-    time.sleep(1)
-
-    # save screenshot
-    p = pyautogui.screenshot()
-    path = os.path.normpath("data/tagScreenshot")
-    p.save(path + ".png")
-
-    # edit screenshot
-    im = PIL.Image.open(path + ".png")
-    im_crop = im.crop((0, 0, x3, y3))
-    im_crop.save(path + ".jpg", quality=100)
-
-    # close window
-    # time.sleep(1)
-    # my.close()
+def getScreenshots():
+    try:
+        win = pygetwindow.getWindowsWithTitle('arknights_emulator')[0]
+    except: # if the emulator is not open terminate the program
+        print("Emulator not open")
+        return -1
+    # if window size isn't 1600x900, resize it
+    if win.size != (1600, 900):
+        win.size = (1600, 900)
+    win.minimize()
+    win.restore()
+    left, top, right, bottom = win.left, win.top, win.right, win.bottom
+    img = ImageGrab.grab(bbox=(left, top, right, bottom))
+    img.save(os.path.normpath("data/tagScreenshot.jpg"))
+    img = Image.open(os.path.normpath("data/tagScreenshot.jpg"))
+    width, height = img.size
+    img = img.crop((0, 33, width, height))
+    img.save(os.path.normpath("data/tagScreenshot.jpg"))
+    # minimize the window so it doesn't get in the way
+    win.minimize()

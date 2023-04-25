@@ -20,13 +20,15 @@ import pytesseract
 # print(30/900)
 # print("\n###########\n")
 
-path = os.path.normpath("data/testdata1.png")
+path = os.path.normpath("data/tagScreenshot.jpg")
 im = Image.open(path)
 width, height = im.size
-firstTagX = 470
-firstTagY = 450
-tagLen = 650-470
-tagHeight = 510-450
+firstTagX = 470 #450
+firstTagY = 450 #430
+tagLen = 178 #625-452
+tagHeight = 56 #488-450
+gapLen = 28 #653 - 625
+gapHeight = 32 #520 - 488
 
 def crop_image(input_image, output_image, start_x, start_y, width, height):
     """Pass input name image, output name image, x coordinate to start croping, y coordinate to start croping, width to crop, height to crop """
@@ -47,8 +49,8 @@ def createTags():
     for i in range(5):
         # f makes it format the string
         crop_image(path, os.path.normpath(f"data/eachTag/tag{i}"),
-                   firstTagX + (i % 3) * (30 + tagLen),
-                   firstTagY + (i % 2) * (30 + tagHeight), tagLen, tagHeight)
+                   firstTagX + (i % 3) * (gapLen + tagLen),
+                   firstTagY + (i % 2) * (gapHeight + tagHeight), tagLen, tagHeight)
 
 
 
