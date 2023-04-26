@@ -2,6 +2,7 @@ import pygetwindow
 from PIL import ImageGrab
 from PIL import Image
 import os
+from time import sleep
 
 def getScreenshots():
     try:
@@ -14,6 +15,7 @@ def getScreenshots():
         win.size = (1600, 900)
     win.minimize()
     win.restore()
+    sleep(0.1)
     left, top, right, bottom = win.left, win.top, win.right, win.bottom
     img = ImageGrab.grab(bbox=(left, top, right, bottom))
     img.save(os.path.normpath("data/tagScreenshot.jpg"))

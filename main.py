@@ -45,6 +45,13 @@ def on_key_press(event):
     elif event.name == '.':
         browser.close()
         os._exit(0)
+    elif event.name == '~':
+        # show emulator
+        try:
+            win = pygetwindow.getWindowsWithTitle('arknights_emulator')[0]
+            win.restore()
+        except:
+            print("Emulator not open")
 
 def read_input():
     while True:
