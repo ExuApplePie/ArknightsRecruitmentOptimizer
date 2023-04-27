@@ -14,10 +14,10 @@ def readTag(filePath, tagList):
         str = pytesseract.image_to_string(Image.open(filePath)).rstrip("\n")
         str = regex.sub('', str)
         # also check if there is a leading character and a space it must be nonsense so remove it
-        if (str[0].isalpha() and str[1] == ' '):
+        if (not str[0].isspace() and str[1] == ' '):
             str = str[2:]
-        # or there is a trailing space and then a character it is also nonsense
-        if (str[-2] == ' ' and str[-1].isalpha()):
+        # or there is a trailing space and then anything but a space it is also nonsense
+        if (str[-2] == ' ' and not str[-1].isspace()):
             str = str[:-2]
         str = str.strip()
         tagList.append(str)

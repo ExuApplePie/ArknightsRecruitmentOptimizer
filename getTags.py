@@ -24,7 +24,7 @@ path = os.path.normpath("data/tagScreenshot.jpg")
 im = Image.open(path)
 width, height = im.size
 firstTagX = 470 #450
-firstTagY = 450 #430
+firstTagY = 440 #430
 tagLen = 178 #625-452
 tagHeight = 56 #488-450
 gapLen = 28 #653 - 625
@@ -43,6 +43,9 @@ def crop_image(input_image, output_image, start_x, start_y, width, height):
         output_img.save(output_image + ".png")
     except (KeyError, IOError) as e:
         print(e)
+    # close image
+    output_img.close()
+    input_img.close()
 
 # this function will create the tags from the image by cropping the image and saving it to the specified folder
 def createTags():

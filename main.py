@@ -21,8 +21,6 @@ def on_key_press(event):
         if (getScreenshot.getScreenshots() == -1):
             return  # if the emulator is not open terminate the program
         sleep(0.5)
-        # this doesn't work
-        browser.switch_to.window(browser.current_window_handle)
         # bring the browser to the front
         browser.maximize_window()
         getTags.createTags()
