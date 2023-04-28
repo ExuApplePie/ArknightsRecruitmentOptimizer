@@ -1,8 +1,4 @@
 Split the image into each of the tags using some basic pixel counting and math
 then OCR each tag. This was somewhat of a headache but I got it to work by resizing the window and then screenshotting it.
-Also for some reason it would not work when the window was in the middle of the screen so I added some text processing.
-Basically if the tag it read in contained an illegal string, just remove that part and pray it is close enough.
-I think an alternative I could've done was put all the legal tags into an array and match to the closest string? But that seems more complicated than just removing
-the illegal strings and pray it works.
-
+Also for some reason the screensize isn't always the same. I just used math and also matching the text to the closest string.
 After that, I just added a global keyboard hook so that it would always listen for the hotkey and then run the script.

@@ -1,3 +1,1 @@
-"# ArknightsRecruitmentOptimizer" 
-"# ArknightsRecruitmentOptimizer" 
-"# ArknightsRecruitmentOptimizer" 
+Set constants in const.py. Only supports English for now.

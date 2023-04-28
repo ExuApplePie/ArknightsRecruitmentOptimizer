@@ -1,8 +1,10 @@
 import difflib
 import os
-from PIL import Image
-import pytesseract
 import re
+
+import pytesseract
+from PIL import Image
+
 import const
 
 directory = "data/eachTag"
@@ -23,10 +25,14 @@ def read_tag(file_path, tag_list):
             tag_name = tag_name[:-2]
         tag_name = tag_name.strip()
         tag_name = difflib.get_close_matches(tag_name, const.all_tags, 1, 0.5)[0]
+        if not const.enable_starter_tag:
+            if tag_name == "Starter":
+                return
         tag_list.append(tag_name)
     except Exception as e:
         print(e)
         print("Error reading tag")
+
 
 def get_tag_list():
     tagList = []
@@ -36,7 +42,3 @@ def get_tag_list():
             read_tag(f, tagList)
     print(tagList)
     return tagList
-
-
-
-

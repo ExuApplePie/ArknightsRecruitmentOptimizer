@@ -1,28 +1,28 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import os
 from time import sleep
 
-from selenium.common import NoSuchElementException, ElementClickInterceptedException
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+import keyboard
+from pywinauto import application
 from selenium import webdriver
-import pygetwindow
+from selenium.common import NoSuchElementException, ElementClickInterceptedException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 import const
 import getScreenshot
 import getTags
 import readTags
-import keyboard
-import os
+
+app = application.Application()
+app.connect(title_re=const.emulator_name)
+
 
 def on_key_press(event):
-    if event.name == '`':
+    if event.name == const.input_tag_key:
         if (getScreenshot.get_screenshot() == -1):
             return  # if the emulator is not open terminate the program
-        sleep(0.5)
+        sleep(0.1)
         # bring the browser to the front
         browser.maximize_window()
         getTags.createTags()
@@ -41,22 +41,24 @@ def on_key_press(event):
         except Exception as e:
             print(e)
     # exit if user inputs . key
-    elif event.name == '.':
+    elif event.name == const.input_tag_key3:
         browser.close()
         os._exit(0)
-    elif event.name == '1':
+    elif event.name == const.input_tag_key2:
         # show emulator
         try:
-            win = pygetwindow.getWindowsWithTitle(const.emulator_name)[0]
-            win.restore()
+            # set focus
+            app.top_window().set_focus()
         except:
             print("Emulator not open")
 
+
 def read_input():
     while True:
-        print("Enter ` to select all tags, . to exit")
+        print(
+            f"Enter {const.input_tag_key} to select all tags, {const.input_tag_key2} to return to emulator {const.input_tag_key3} to exit")
         keyboard.on_press(on_key_press)
-        keyboard.wait() # this keeps the program running, probably not needed
+        keyboard.wait()  # this keeps the program running, probably not needed
 
 
 def openCalc():
@@ -70,7 +72,6 @@ def openCalc():
     (browser.find_element(By.CSS_SELECTOR, "[value='en']")).click()
 
 
-
 if __name__ == '__main__':
     url = "https://aceship.github.io/AN-EN-Tags/akhr.html"
     browser = webdriver.Firefox()
@@ -78,3 +79,5 @@ if __name__ == '__main__':
     browser.get(url)
     openCalc()
     read_input()
+    # disconnect from the emulator
+    app.kill()
