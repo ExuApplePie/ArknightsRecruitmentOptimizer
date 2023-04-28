@@ -3,25 +3,27 @@ from PIL import ImageGrab
 from PIL import Image
 import os
 from time import sleep
+import const
 
-def getScreenshots():
+
+def get_screenshot():
     try:
-        win = pygetwindow.getWindowsWithTitle('arknights_emulator')[0]
-    except: # if the emulator is not open terminate the program
+        win = pygetwindow.getWindowsWithTitle(const.emulator_name)[0]
+    except:  # if the emulator is not open terminate the program
         print("Emulator not open")
         return -1
-    # if window size isn't 1600x900, resize it
-    if win.size != (1600, 900):
-        win.size = (1600, 900)
+    win.size = const.emulator_size # equivalent to win.size = (1600, 900)
+    sleep(0.1)
     win.minimize()
     win.restore()
     sleep(0.1)
     left, top, right, bottom = win.left, win.top, win.right, win.bottom
     img = ImageGrab.grab(bbox=(left, top, right, bottom))
-    img.save(os.path.normpath("data/tagScreenshot.jpg"))
-    img = Image.open(os.path.normpath("data/tagScreenshot.jpg"))
+    img.save(const.screenshot_path)
+    img = Image.open(const.screenshot_path)
     width, height = img.size
-    img = img.crop((0, 33, width, height))
-    img.save(os.path.normpath("data/tagScreenshot.jpg"))
+    img = img.crop((0, 33, width, height))  # 33 because bluestacks has a thing on top that is 33 pixels tall
+    img.save(const.screenshot_path)
+    img.close()
     # minimize the window so it doesn't get in the way
     win.minimize()

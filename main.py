@@ -10,6 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import pygetwindow
+
+import const
 import getScreenshot
 import getTags
 import readTags
@@ -18,19 +20,18 @@ import os
 
 def on_key_press(event):
     if event.name == '`':
-        if (getScreenshot.getScreenshots() == -1):
+        if (getScreenshot.get_screenshot() == -1):
             return  # if the emulator is not open terminate the program
         sleep(0.5)
         # bring the browser to the front
         browser.maximize_window()
         getTags.createTags()
-        tagList = readTags.getTagList()
+        tagList = readTags.get_tag_list()
         # deselect previously clicked tags
         try:
             (browser.find_element(By.CSS_SELECTOR, "button[onclick=\"clickBtnClear()\"]")).click()
             # iterate over tagList
             for i in tagList:
-                print(f"[data-original-title='{i}']")
                 element = (browser.find_element(By.CSS_SELECTOR, f"[data-original-title='{i}']"))
                 element.click()
         except NoSuchElementException:
@@ -43,10 +44,10 @@ def on_key_press(event):
     elif event.name == '.':
         browser.close()
         os._exit(0)
-    elif event.name == '~':
+    elif event.name == '1':
         # show emulator
         try:
-            win = pygetwindow.getWindowsWithTitle('arknights_emulator')[0]
+            win = pygetwindow.getWindowsWithTitle(const.emulator_name)[0]
             win.restore()
         except:
             print("Emulator not open")

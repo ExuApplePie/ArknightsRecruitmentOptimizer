@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import const
 
 import pytesseract
 
@@ -20,15 +21,15 @@ import pytesseract
 # print(30/900)
 # print("\n###########\n")
 
-path = os.path.normpath("data/tagScreenshot.jpg")
+path = const.screenshot_path
 im = Image.open(path)
 width, height = im.size
-firstTagX = 470 #450
-firstTagY = 440 #430
-tagLen = 178 #625-452
-tagHeight = 56 #488-450
-gapLen = 28 #653 - 625
-gapHeight = 32 #520 - 488
+firstTagX = width * 470/1600 # 470 on a 1600x900 screen it is at 470, so 470/1600 = 0.29375
+firstTagY = height * 435/867 # 435 on a 1600x867 screen it is at 435, so 435/867 = 0.501445
+tagLen = width * 178/1600 # 178 on a 1600x900 screen it is at 178, so 178/1600 = 0.11125
+tagHeight = height * 53/867 # 53 on a 1600x867 screen it is at 53, so 53/867 = 0.0611
+gapLen = width * 31/1600 # 29 on a 1600x900 screen it is at 29, so 29/1600 = 0.018125
+gapHeight = height * 32/867 # 29 on a 1600x867 screen it is at 29, so 29/867 = 0.03333333333333333
 
 def crop_image(input_image, output_image, start_x, start_y, width, height):
     """Pass input name image, output name image, x coordinate to start croping, y coordinate to start croping, width to crop, height to crop """
