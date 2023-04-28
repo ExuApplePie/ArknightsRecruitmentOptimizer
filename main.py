@@ -15,18 +15,19 @@ import getTags
 import readTags
 
 app = application.Application()
-app.connect(title_re=const.emulator_name)
+app2 = application.Application()
+app.connect(title_re=const.EMULATOR_NAME)
 
 
 def on_key_press(event):
-    if event.name == const.input_tag_key:
+    if event.name == const.INPUT_TAG_KEY:
         if (getScreenshot.get_screenshot() == -1):
             return  # if the emulator is not open terminate the program
         sleep(0.1)
         # bring the browser to the front
-        browser.maximize_window()
-        getTags.createTags()
-        tagList = readTags.get_tag_list()
+        app2.top_window().set_focus()
+        tag_location_list = getTags.createTags()
+        tagList = readTags.get_tag_list(tag_location_list)
         # deselect previously clicked tags
         try:
             (browser.find_element(By.CSS_SELECTOR, "button[onclick=\"clickBtnClear()\"]")).click()
@@ -41,10 +42,10 @@ def on_key_press(event):
         except Exception as e:
             print(e)
     # exit if user inputs . key
-    elif event.name == const.input_tag_key3:
+    elif event.name == const.END_PROGRAM_KEY:
         browser.close()
         os._exit(0)
-    elif event.name == const.input_tag_key2:
+    elif event.name == const.SHOW_EMULATOR_KEY:
         # show emulator
         try:
             # set focus
@@ -56,7 +57,7 @@ def on_key_press(event):
 def read_input():
     while True:
         print(
-            f"Enter {const.input_tag_key} to select all tags, {const.input_tag_key2} to return to emulator {const.input_tag_key3} to exit")
+            f"Enter {const.INPUT_TAG_KEY} to select all tags, {const.SHOW_EMULATOR_KEY} to return to emulator {const.END_PROGRAM_KEY} to exit")
         keyboard.on_press(on_key_press)
         keyboard.wait()  # this keeps the program running, probably not needed
 
@@ -77,7 +78,6 @@ if __name__ == '__main__':
     browser = webdriver.Firefox()
     # open a new window if not already open
     browser.get(url)
+    app2.connect(title_re=browser.title)
     openCalc()
     read_input()
-    # disconnect from the emulator
-    app.kill()
