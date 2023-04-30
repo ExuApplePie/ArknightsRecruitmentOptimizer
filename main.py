@@ -45,7 +45,7 @@ def on_key_press(event):
     # exit if user inputs . key
     elif event.name == const.END_PROGRAM_KEY:
         browser.close()
-        os._exit(0)
+        os._exit(1)
     elif event.name == const.SHOW_EMULATOR_KEY:
         # show emulator
         try:

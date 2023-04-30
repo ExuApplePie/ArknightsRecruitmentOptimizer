@@ -1,5 +1,5 @@
 from time import sleep
-
+import os
 import pygetwindow
 from PIL import ImageGrab
 
@@ -11,7 +11,7 @@ def get_screenshot():
         win = pygetwindow.getWindowsWithTitle(const.EMULATOR_NAME)[0]
     except:  # if the emulator is not open terminate the program
         print("Emulator not open")
-        return -1
+        os.exit(1)
     win.minimize()
     win.restore()
     win.size = const.EMULATOR_SIZE  # equivalent to win.size = (1600, 900)
