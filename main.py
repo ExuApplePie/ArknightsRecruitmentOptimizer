@@ -11,12 +11,14 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 import const
 import getScreenshot
-import getTags
 import readTags
 
 app = application.Application()
 app2 = application.Application()
-app.connect(title_re=const.EMULATOR_NAME)
+try:
+    app.connect(title_re=const.EMULATOR_NAME)
+except:
+    print("Emulator not open")
 
 
 def on_key_press(event):
@@ -26,8 +28,7 @@ def on_key_press(event):
         sleep(0.1)
         # bring the browser to the front
         app2.top_window().set_focus()
-        tag_location_list = getTags.createTags()
-        tagList = readTags.get_tag_list(tag_location_list)
+        tagList = readTags.get_tag_list()
         # deselect previously clicked tags
         try:
             (browser.find_element(By.CSS_SELECTOR, "button[onclick=\"clickBtnClear()\"]")).click()
