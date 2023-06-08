@@ -5,4 +5,5 @@ call venv\Scripts\activate.bat
 pip install -r requirements.txt
 pip install pyinstaller
 pyinstaller --clean -F -n OptimalRecruitmentChecker main.py
+exit
 ```

@@ -31,10 +31,10 @@ def on_key_press(event):
         tagList = readTags.get_tag_list()
         # deselect previously clicked tags
         try:
-            (browser.find_element(By.CSS_SELECTOR, "button[onclick=\"clickBtnClear()\"]")).click()
+            (browser.find_element(By.CSS_SELECTOR, "div.paragraph--type--text:nth-child(2) > div:nth-child(1) > button:nth-child(6)")).click()
             # iterate over tagList
             for i in tagList:
-                element = (browser.find_element(By.CSS_SELECTOR, f"[data-original-title='{i}']"))
+                element = (browser.find_element(By.CSS_SELECTOR, f"#tag-{i}".lower()))
                 element.click()
         except NoSuchElementException:
             print("NoSuchElementException")
@@ -66,19 +66,15 @@ def read_input():
 def openCalc():
     # select the element with attribute data-original-title="Caster"
     # wait 5 seconds for the element to be clickable, caster chosen arbitrarily
-    sleep(3)
-    WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-original-title='Caster']")))
-    (browser.find_element(By.CSS_SELECTOR, "#navitemRegion > #regionDropdown")).click()
-    # wait a tiny bit for the dropdown to appear
-    sleep(0.1)
-    (browser.find_element(By.CSS_SELECTOR, "[value='en']")).click()
-
+    sleep(1)
+    WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "td.guarantee-filter:nth-child(1)")))
+    (browser.find_element(By.CSS_SELECTOR, "td.guarantee-filter:nth-child(1)")).click()
+    (browser.find_element(By.CSS_SELECTOR, ".toggle-tag-display-container > label:nth-child(2)")).click()
 
 if __name__ == '__main__':
-    url = "https://aceship.github.io/AN-EN-Tags/akhr.html"
     browser = webdriver.Firefox()
     # open a new window if not already open
-    browser.get(url)
+    browser.get(const.WEBSITE)
     app2.connect(title_re=browser.title)
     openCalc()
     read_input()
