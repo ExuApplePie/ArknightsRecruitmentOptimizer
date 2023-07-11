@@ -36,6 +36,8 @@ def on_key_press(event):
             for i in tagList:
                 element = (browser.find_element(By.CSS_SELECTOR, f"#tag-{i}".lower()))
                 element.click()
+            operatorsList = browser.find_element(By.CSS_SELECTOR, ".operators-list")
+            browser.execute_script("arguments[0].scrollIntoView();", operatorsList)
         except NoSuchElementException:
             print("NoSuchElementException")
         except ElementClickInterceptedException:
@@ -75,6 +77,6 @@ if __name__ == '__main__':
     browser = webdriver.Firefox()
     # open a new window if not already open
     browser.get(const.WEBSITE)
-    app2.connect(title_re=browser.title)
+    app2.connect(title_re=browser.title, found_index=0) # test which found index works
     openCalc()
     read_input()
