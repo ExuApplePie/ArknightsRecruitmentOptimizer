@@ -1,4 +1,4 @@
-MUST INSTALL https://github.com/UB-Mannheim/tesseract/releases and add to PATH
+MUST INSTALL [https://github.com/UB-Mannheim/tesseract/releases](https://github.com/UB-Mannheim/tesseract/wiki) and add to PATH
 
 Set constants in const.py. Then run create_executable.bat and find the executable in /dist/. Only supports English, and Windows only.
 The emulator must also be on the primary monitor.
