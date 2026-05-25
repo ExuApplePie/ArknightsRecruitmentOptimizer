@@ -7,7 +7,7 @@ IS_BLUESTACKS = True  # set to False if using Nox or any emulator that doesn't h
 BLUESTACKS_TOP = 33 if IS_BLUESTACKS else 0  # or set to whatever you need
 IMAGE_SIZE = (1600, EMULATOR_SIZE[1] - BLUESTACKS_TOP)  # probably don't change this - unused if SAVE_TO_MEMORY is True
 # full list is: Starter, Senior Operator, Top Operator, Melee, Ranged, Guard, Medic, Vanguard, Caster, Sniper, Defender, Supporter, Specialist, Healing, Support, DPS, AoE, Slow, Survival, Defense, Debuff, Shift, Crowd Control, Nuker, Summon, Fast-Redeploy, Robot, DP-Recovery
-ALL_TAGS = ['Starter', 'Senior-Operator', 'Top-Operator', 'Melee', 'Ranged', 'Guard', 'Medic', 'Vanguard', 'Caster',
+ALL_TAGS = ['Starter', 'Senior Operator', 'Top Operator', 'Melee', 'Ranged', 'Guard', 'Medic', 'Vanguard', 'Caster',
             'Sniper', 'Defender', 'Supporter', 'Specialist', 'Healing', 'Support', 'DPS', 'AoE', 'Slow', 'Survival',
             'Defense', 'Debuff', 'Shift', 'Crowd-Control', 'Nuker', 'Summon', 'Fast-Redeploy', 'Robot', 'DP-Recovery']
 SCREENSHOT_PATH = path.normpath("data/tagScreenshot.jpg")  # probably don't change this
