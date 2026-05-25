@@ -1,19 +1,21 @@
 import os
+import sys
 from time import sleep
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 import keyboard
 from pywinauto import application
-from selenium import webdriver
-from selenium.common import NoSuchElementException, ElementClickInterceptedException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+
 
 import const
 import getScreenshot
 import readTags
+
+import queue
+import threading
+
+key_queue = queue.Queue()
 
 app = application.Application()
 app2 = application.Application()
@@ -23,73 +25,59 @@ except:
     print("Emulator not open")
 
 
-def on_key_press(event, browser, page):
+def on_key_press(event):
     if event.name == const.INPUT_TAG_KEY:
-        if (getScreenshot.get_screenshot() == -1):
-            return  # if the emulator is not open terminate the program
-        sleep(0.1)
-        # bring the browser to the front
-        app2.top_window().set_focus()
-        tagList = []
-        tagList = readTags.get_tag_list()
-        # deselect previously clicked tags
-        try:
-            for i in tagList:
-                page.get_by_text(i).click()
-            page.locator("#recruitResults").scroll_into_view_if_needed()
-            # (browser.find_element(By.CSS_SELECTOR, "div.paragraph--type--text:nth-child(2) > div:nth-child(1) > button:nth-child(6)")).click()
-            # iterate over tagList
-            # for i in tagList:
-                # element = (browser.find_element(By.CSS_SELECTOR, f"#tag-{i}".lower()))
-                # element.click()
-            # operatorsList = browser.find_element(By.CSS_SELECTOR, ".operators-list")
-            # browser.execute_script("arguments[0].scrollIntoView();", operatorsList)
-        except NoSuchElementException:
-            print("NoSuchElementException")
-        except ElementClickInterceptedException:
-            print("ElementClickInterceptedException")
-        except Exception as e:
-            print(e)
-    # exit if user inputs . key
+        key_queue.put("input_tags")
     elif event.name == const.END_PROGRAM_KEY:
-        browser.close()
-        os._exit(1)
+        key_queue.put("exit")
     elif event.name == const.SHOW_EMULATOR_KEY:
-        # show emulator
-        try:
-            # set focus
-            app.top_window().set_focus()
-        except:
-            print("Emulator not open")
+        key_queue.put("show_emulator")
 
+def handle_key_actions(browser, page):
+    if (getScreenshot.get_screenshot() == -1):
+        return  # if the emulator is not open terminate the program
+    expect(page.get_by_text("Reset")).to_be_visible(timeout=5000)  # wait for the page to load
+    page.get_by_text("Reset").click()  # reset the page to clear previous tags
+    # bring the browser to the front
+    app2.top_window().set_focus()
+    tagList = readTags.get_tag_list()
+    # deselect previously clicked tags
+    try:
+        for i in tagList:
+            page.get_by_text(i, exact=True).click()
+        page.locator("#recruitResults").scroll_into_view_if_needed()
+    except Exception as e:
+        print(e)
 
 def read_input(browser, page):
+    keyboard.on_press(on_key_press)
     while True:
-        print(
-            f"Enter {const.INPUT_TAG_KEY} to select all tags, {const.SHOW_EMULATOR_KEY} to return to emulator {const.END_PROGRAM_KEY} to exit")
-        keyboard.on_press(lambda event: on_key_press(event, browser, page))
-        keyboard.wait()  # this keeps the program running, probably not needed
+        try:
+            action = key_queue.get(timeout=0.1)
+            if action == "input_tags":
+                handle_key_actions(browser, page)
+            elif action == "exit":
+                browser.close()
+                sys.exit()
+            elif action == "show_emulator":
+                try:
+                    app.top_window().set_focus()
+                except:
+                    print("Emulator not open")
+        except queue.Empty:
+            pass
+        # print(
+        #     f"Enter {const.INPUT_TAG_KEY} to select all tags, {const.SHOW_EMULATOR_KEY} to return to emulator {const.END_PROGRAM_KEY} to exit")
+        # keyboard.on_press(lambda event: on_key_press(event, browser, page))
+        # keyboard.wait()  # this keeps the program running, probably not needed
 
 
-# def openCalc():
-#     # select the element with attribute data-original-title="Caster"
-#     # wait 5 seconds for the element to be clickable, caster chosen arbitrarily
-#     sleep(1)
-#     WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "td.guarantee-filter:nth-child(1)")))
-#     (browser.find_element(By.CSS_SELECTOR, "td.guarantee-filter:nth-child(1)")).click()
-#     (browser.find_element(By.CSS_SELECTOR, ".toggle-tag-display-container > label:nth-child(2)")).click()
 
 if __name__ == '__main__':
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+        context = browser.new_context(viewport={ 'width': 1920, 'height': 1080 })
+        page = context.new_page()
         page.goto(const.WEBSITE)
         app2.connect(title_re=page.title(), found_index=0)  # test which found index works
         read_input(browser=browser, page=page)
-
-    # browser = webdriver.Firefox()
-    # # open a new window if not already open
-    # browser.get(const.WEBSITE)
-    # app2.connect(title_re=browser.title, found_index=0) # test which found index works
-    # openCalc()
-    # read_input()

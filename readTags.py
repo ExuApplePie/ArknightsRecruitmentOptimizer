@@ -59,7 +59,7 @@ def get_tag_list():
         read_tag(img_crop, tag_list)
         img_crop.close()
     image.close()
-    print(tag_list)
+    # print(tag_list)
     return tag_list
 
 if __name__ == "__main__":
