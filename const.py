@@ -1,7 +1,7 @@
 from io import BytesIO
 from os import path
-WEBSITE = "https://gamepress.gg/arknights/tools/arknights-recruitment-tag-filter" # "https://aceship.github.io/AN-EN-Tags/akhr.html" - not maintained enough
-EMULATOR_NAME = 'arknights_emulator'  # set to your emulator name
+WEBSITE = "https://akgcc.github.io/recruit/"#"https://gamepress.gg/arknights/tools/arknights-recruitment-tag-filter" # "https://aceship.github.io/AN-EN-Tags/akhr.html" - not maintained enough
+EMULATOR_NAME = 'arknights_homura'  # set to your emulator name
 EMULATOR_SIZE = (1600, 900)  # set to your emulator size - shouldn't actually matter as long as your monitor >= this size
 IS_BLUESTACKS = True  # set to False if using Nox or any emulator that doesn't have something on top
 BLUESTACKS_TOP = 33 if IS_BLUESTACKS else 0  # or set to whatever you need
