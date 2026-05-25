@@ -1,6 +1,5 @@
 import sys
 from time import sleep
-import mss
 import pygetwindow as gw
 from PIL import ImageGrab
 

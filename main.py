@@ -1,4 +1,3 @@
-import os
 import sys
 from time import sleep
 
@@ -13,7 +12,6 @@ import getScreenshot
 import readTags
 
 import queue
-import threading
 
 key_queue = queue.Queue()
 
